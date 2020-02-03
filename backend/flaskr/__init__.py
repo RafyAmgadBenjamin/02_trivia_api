@@ -108,6 +108,9 @@ def create_app(test_config=None):
 
     @app.route("/questions/<int:question_id>", methods=["DELETE"])
     def delete_question(question_id):
+        """
+      This API is used to delete the question
+      """
         try:
             question = Question.query.filter(Question.id == question_id).one_or_none()
             if question == None:
@@ -127,15 +130,50 @@ def create_app(test_config=None):
             abort(422)
 
     """
-  TODO: 
+  @TODO: 
   Create an endpoint to POST a new question, 
   which will require the question and answer text, 
   category, and difficulty score.
 
   TEST: When you submit a question on the "Add" tab, 
   the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
-  """
+    of the questions list in the "List" tab.  
+      """
+
+    @app.route("/questions", methods=["POST"])
+    def add_question():
+        """
+      This API is used to add question
+      """
+        body = request.get_json()
+        question = body.get("question", None)
+        answer = body.get("answer", None)
+        difficulty = body.get("difficulty", None)
+        category = body.get("category", None)
+        # TODO check search may be implemeneted here
+        # Validate that I have all the values
+        if not question and not answer and not difficulty and not category:
+            abort(422)
+        try:
+            question = Question(
+                question=question,
+                answer=answer,
+                difficulty=difficulty,
+                category=category,
+            )
+            question.insert()
+            selection = Question.query.order_by(Question.id).all()
+            current_questions = pagination_questions(request, selection)
+            return jsonify(
+                {
+                    "success": True,
+                    "created": question.id,
+                    "questions": current_questions,
+                    "total_questions": len(selection),
+                }
+            )
+        except:
+            abort(422)
 
     """
   TODO: 
