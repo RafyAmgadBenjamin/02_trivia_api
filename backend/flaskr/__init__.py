@@ -150,30 +150,48 @@ def create_app(test_config=None):
         answer = body.get("answer", None)
         difficulty = body.get("difficulty", None)
         category = body.get("category", None)
-        # TODO check search may be implemeneted here
-        # Validate that I have all the values
-        if not question and not answer and not difficulty and not category:
-            abort(422)
-        try:
-            question = Question(
-                question=question,
-                answer=answer,
-                difficulty=difficulty,
-                category=category,
+        search_term = body.get("searchTerm", None)
+        # check search term
+        if search_term is not None:  # None is explit, to do search in case empty string
+            # Remove spaces from the begining and end
+            search_term = search_term.strip()
+            selection = Question.query.filter(
+                Question.question.ilike("%{}%".format(search_term))
             )
-            question.insert()
-            selection = Question.query.order_by(Question.id).all()
             current_questions = pagination_questions(request, selection)
+            # Get all the questions to get the count of questions not only the searched .
+            all_questions = Question.query.all()
             return jsonify(
                 {
                     "success": True,
-                    "created": question.id,
                     "questions": current_questions,
-                    "total_questions": len(selection),
+                    "total_questions": len(all_questions),
                 }
             )
-        except:
-            abort(422)
+        else:
+            # Validate that I have all the values
+            if not question and not answer and not difficulty and not category:
+                abort(422)
+            try:
+                question = Question(
+                    question=question,
+                    answer=answer,
+                    difficulty=difficulty,
+                    category=category,
+                )
+                question.insert()
+                selection = Question.query.order_by(Question.id).all()
+                current_questions = pagination_questions(request, selection)
+                return jsonify(
+                    {
+                        "success": True,
+                        "created": question.id,
+                        "questions": current_questions,
+                        "total_questions": len(selection),
+                    }
+                )
+            except:
+                abort(422)
 
     """
   TODO: 
