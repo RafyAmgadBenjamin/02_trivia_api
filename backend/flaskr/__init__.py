@@ -308,6 +308,13 @@ def create_app(test_config=None):
             jsonify({"success": False, "error": 405, "message": "not allowed"}),
             405,
         )
+    
+    @app.errorhandler(500)
+    def not_allowed(error):
+    return (
+        jsonify({"success": False, "error": 500, "message": "internal server error"}),
+        405,
+    )
 
     return app
 
