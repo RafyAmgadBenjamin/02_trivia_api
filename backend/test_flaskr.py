@@ -46,6 +46,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(data["categories"])
 
     TODO  # the error scenario for the above API
+    # delete all categores, create the test, add all the categories
 
 
 # Make the tests conveniently executable
