@@ -2,19 +2,26 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-import random
+from random import shuffle
+
 
 from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
-
+# Helper functions
 def pagination_questions(request, selection):
     page = request.args.get("page", 1, type=int)
     start = (page - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
     formatted_questions = [question.format() for question in selection]
     return formatted_questions[start:end]
+
+
+def get_next_question(questions, previous_questions):
+    for question in questions:
+        if question.id not in previous_questions:
+            return question
 
 
 def create_app(test_config=None):
@@ -194,7 +201,7 @@ def create_app(test_config=None):
                 abort(422)
 
     """
-  TODO: 
+  @TODO: 
   Create a POST endpoint to get questions based on a search term. 
   It should return any questions for whom the search term 
   is a substring of the question. 
@@ -233,7 +240,7 @@ def create_app(test_config=None):
         )
 
     """
-  TODO: 
+  @TODO: 
   Create a POST endpoint to get questions to play the quiz. 
   This endpoint should take category and previous question parameters 
   and return a random questions within the given category, 
@@ -243,6 +250,30 @@ def create_app(test_config=None):
   one question at a time is displayed, the user is allowed to answer
   and shown whether they were correct or not. 
   """
+
+    @app.route("/quizzes", methods=["POST"])
+    def get_quiz():
+        body = request.get_json()
+        quiz_category = body.get("quiz_category")
+        previous_questions = body.get("previous_questions")
+        category = Category.query.filter(
+            Category.type == quiz_category.get("type")
+        ).one_or_none()
+        if category:
+            # Then it is one of the categories
+            questions = Question.query.filter(Question.category == category.id).all()
+        else:
+            # then All is selected
+            questions = Question.query.all()
+
+        # The user has got all the questions
+        if len(questions) == len(previous_questions):
+            return jsonify({"success": True})
+
+        # I used to shuffle the array everytime to get a random generations
+        shuffle(questions)
+        question = get_next_question(questions, previous_questions)
+        return jsonify({"success": True, "question": question.format()})
 
     """
   @TODO: 
