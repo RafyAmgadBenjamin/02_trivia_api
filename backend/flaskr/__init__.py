@@ -185,7 +185,7 @@ def create_app(test_config=None):
             )
         else:
             # Validate that I have all the values
-            if not question and not answer and not difficulty and not category:
+            if not question or not answer or not difficulty or not category:
                 abort(422)
             try:
                 question = Question(
