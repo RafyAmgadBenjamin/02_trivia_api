@@ -128,6 +128,63 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 422)
         self.assertEqual(data["message"], "unprocessable")
 
+    def test_add_new_question(self):
+        # Arrange
+        # convert the question object to Json object
+        question = {
+            "question": self.question.question,
+            "category": self.question.category,
+            "answer": self.question.answer,
+            "difficulty": self.question.difficulty,
+        }
+        # Act
+        res = self.client().post("/questions", json=question)
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["created"])
+        self.assertTrue(len(data["questions"]))
+        self.assertTrue(data["total_questions"])
+
+    def test_405_if_question_adding_not_allowed(self):
+        # Arrange
+        # convert the question object to Json object
+        question = {
+            "question": self.question.question,
+            "category": self.question.category,
+            "answer": self.question.answer,
+            "difficulty": self.question.difficulty,
+        }
+
+        # Act
+        res = self.client().post("/questions/45", json=question)
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "not allowed")
+
+    def test_422_if_question_is_not_processable(self):
+        """
+        Posting a question but without answer shall be not processable
+        """
+        # Arrange
+        # convert the question object to Json object
+        question = {
+            "question": self.question.question,
+            "category": self.question.category,
+            "answer": None,
+            "difficulty": self.question.difficulty,
+        }
+        # Act
+        res = self.client().post("/questions", json=question)
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
