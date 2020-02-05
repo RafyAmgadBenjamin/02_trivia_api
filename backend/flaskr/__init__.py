@@ -62,7 +62,11 @@ def create_app(test_config=None):
         # if there is no categories, will return not found
         if len(all_categories) == 0:
             abort(404)
-        categories = [category.type for category in all_categories]
+        # categories = [category.type for category in all_categories]
+        categories = {}
+        for category in all_categories:
+            categories[category.id] = category.type
+
         return jsonify({"success": True, "categories": categories})
 
     """
@@ -92,9 +96,13 @@ def create_app(test_config=None):
         # If there is no categories, will return not found
         if len(all_categories) == 0:
             abort(404)
-        categories = [category.type for category in all_categories]
+        # categories = [category.type for category in all_categories]
+        categories = {}
+        for category in all_categories:
+            categories[category.id] = category.type
+
         # Assumed the current category is the first category
-        current_category = categories[0]
+        current_category = categories[1]
         return jsonify(
             {
                 "success": True,
@@ -310,7 +318,7 @@ def create_app(test_config=None):
         )
 
     @app.errorhandler(500)
-    def not_allowed(error):
+    def internal_server_error(error):
         return (
             jsonify(
                 {"success": False, "error": 500, "message": "internal server error"}
