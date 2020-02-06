@@ -262,9 +262,11 @@ def create_app(test_config=None):
         body = request.get_json()
         quiz_category = body.get("quiz_category")
         previous_questions = body.get("previous_questions")
-        category_id = quiz_category.get("id")
+        category_id = quiz_category.get("id", None)
 
-        if category_id != 0:
+        if category_id == None:
+            abort(400)
+        elif category_id != 0:
             # Then it is one of the categories
             category = Category.query.filter(
                 Category.type == quiz_category.get("type")
