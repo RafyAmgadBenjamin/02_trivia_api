@@ -186,6 +186,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["message"], "unprocessable")
 
     def test_get_question_search_with_results(self):
+        # ACT
         search_term = {"searchTerm": "penicillin"}
         res = self.client().post("/questions", json=search_term)
         data = json.loads(res.data)
@@ -194,9 +195,10 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(len(data["questions"]))
         self.assertEqual(len(data["questions"]), 1)
-        self.assertEqual(data["total_questions"],1)
+        self.assertEqual(data["total_questions"], 1)
 
     def test_get_question__search_without_results(self):
+        # ACT
         search_term = {"searchTerm": "dfnaksdfdilkjlf3jiojjojjd"}
         res = self.client().post("/questions", json=search_term)
         data = json.loads(res.data)
@@ -205,6 +207,27 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertEqual(len(data["questions"]), 0)
         self.assertEqual(data["total_questions"], 0)
+
+    def test_get_question_per_category(self):
+        # Act
+        res = self.client().get("/categories/1/questions")
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertEqual(len(data["questions"]), 3)
+        self.assertEqual(data["total_questions"], 3)
+        self.assertEqual(data["current_category"], "Science")
+
+    def test_400_if_the_category_is_not_valid(self):
+        # Act
+        res = self.client().get("/categories/1000/questions")
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["error"], 400)
+        self.assertEqual(data["message"], "bad request")
 
 
 # Make the tests conveniently executable
