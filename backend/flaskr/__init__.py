@@ -174,13 +174,11 @@ def create_app(test_config=None):
                 Question.question.ilike("%{}%".format(search_term))
             )
             current_questions = pagination_questions(request, selection)
-            # Get all the questions to get the count of questions not only the searched .
-            all_questions = Question.query.all()
             return jsonify(
                 {
                     "success": True,
                     "questions": current_questions,
-                    "total_questions": len(all_questions),
+                    "total_questions": len(selection.all()),
                 }
             )
         else:
