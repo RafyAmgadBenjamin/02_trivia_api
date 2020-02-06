@@ -229,6 +229,36 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["error"], 400)
         self.assertEqual(data["message"], "bad request")
 
+    def test_get_quiz(self):
+        # Act
+        posted_data = {
+            "previous_questions": [28],
+            "quiz_category": {"type": "Sports", "id": "6"},
+        }
+        res = self.client().post("/quizzes", json=posted_data)
+        data = json.loads(res.data)
+        # Assert
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+        self.assertTrue(data["question"])
+        # validate that the returned question of the same category I have selected
+        self.assertEqual(data["question"]["category"], 6)
+
+    def test_400_post_invalid_category_for_quiz(self):
+        # Act
+        posted_data = {
+            "previous_questions": [28],
+            "quiz_category": {"type": "", "id": ""},
+        }
+        res = self.client().post("/quizzes", json=posted_data)
+        data = json.loads(res.data)
+         # Assert
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["error"], 400)
+        self.assertEqual(data["message"], "bad request")
+
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
