@@ -39,7 +39,7 @@ class TriviaTestCase(unittest.TestCase):
         pass
 
     """
-    TODO
+    @TODO
     Write at least one test for each test for successful operation and for expected errors.
     """
 
@@ -51,29 +51,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data["success"], True)
         self.assertTrue(data["categories"])
 
-    # TODO  # the error scenario for the above API
-    # delete all categores, create the test, add all the categories
-    # def test_404_for_no_catigories(self):
-    #     categories = Category.query.all()
-    #     with app.app_context():
-    #         self.db = SQLAlchemy()
-    #         for category in categories:
-    #             self.db.session.delete(category)
-    #         try:
-    #             self.db.session.commit()
-    #         except:
-    #             self.db.session.rollback()
-
-    #         res = self.client().get("/categories")
-    #         data = json.loads(res.data)
-    #         self.assertEqual(res.status_code, 404)
-
-    #         for category in categories:
-    #             self.db.session.add(Category)
-    #         try:
-    #             self.db.session.commit()
-    #         except:
-    #             self.db.session.rollback()
 
     def test_get_paginated_questions(self):
         res = self.client().get("/questions")
