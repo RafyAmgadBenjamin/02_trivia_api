@@ -42,3 +42,101 @@ The `./frontend` directory contains a complete React frontend to consume the dat
 Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. 
 
 [View the README.md within ./frontend for more details.](./frontend/README.md)
+
+### API Reference
+___
+
+#### Getting started
+
+* Base URL: At present this app can only run locally and is not hosted at a base URL. The backend app is hosted at the default, ```http://127.0.0.1:5000/``` Which is set as a proxy in the frontend configuration.
+
+* Authentication: This version of the application does not require authentication or API keys.
+
+#### Error Handling
+
+Errors are returned as JSON objects in the following format:
+
+``` json
+{
+    "success": False,
+    "error": 400,
+    "message":"bad request"
+}
+```
+
+The api will return five error types when requests fail:
+
+* 400: Bad Request
+* 404: Resource not found
+* 422: Not processable
+* 405: Not allowed
+* 500: Internal server error
+
+## Endpoints
+
+#### GET /categories
+
+* General: It returns a list of all available categories
+* Sample: ```curl http://127.0.0.1:5000/categories```
+
+
+``` json
+{
+  "categories": {
+    "1": "Science", 
+    "2": "Art", 
+    "3": "Geography", 
+    "4": "History", 
+    "5": "Entertainment", 
+    "6": "Sports"
+  }, 
+  "success": true
+}
+```
+
+#### GET /questions
+
+* General: It returns 
+    * list of questions 
+    * Total number of questions
+    * current category 
+    * 
+
+* Sample:
+
+``` json
+```
+
+
+#### DELETE /questions/\<int:question_id\>
+
+* General:
+* Sample:
+
+``` json
+```
+
+#### POST /questions
+
+* General:
+* Sample:
+
+``` json
+```
+
+#### GET /categories/\<int:category_id\>/questions
+
+* General:
+* Sample:
+
+``` json
+```
+
+
+#### POST /quizzes
+
+* General:
+* Sample:
+
+``` json
+```
