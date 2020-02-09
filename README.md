@@ -12,8 +12,6 @@ That's where you come in! Help them finish the trivia app so they can start hold
 4) Search for questions based on a text query string.
 5) Play the quiz game, randomizing either all questions or within a specific category. 
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others. 
-
 ## Tasks
 
 There are `TODO` comments throughout project. Start by reading the READMEs in:
@@ -197,7 +195,7 @@ The api will return five error types when requests fail:
 #### DELETE /questions/\<int:question_id\>
 
 * General:
-  * It deltes a quesion of specific Id.
+  * It deletes a question of specific Id.
   * It returns deleted question Id.
   * It returns list of remaining questions.
   * It returns the total number of questions.
@@ -292,7 +290,7 @@ This endpoint can add new question or search for questions
 1. If there is no a **search term** included in the request body so the endpoint will add a new question.
 
 * General:
-  * Creates new question.
+  * Creates new question using the submitted question, answer, category and difficulty.
   * Returns Id of the created question.
   * Returns a list of all paginated questions after adding the new one.
   * Returns the length of all questions.
@@ -382,7 +380,7 @@ This endpoint can add new question or search for questions
 
 * General:
 
-  * It returns list of all questions contain the **search term** paginated.
+  * It returns list of all questions contain the **search term** which was submitted and the questions will be paginated.
   * Total number of questions that have the **search term**
 * Sample:```curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm": "player"}'```
 
@@ -469,7 +467,7 @@ This endpoint can add new question or search for questions
 
 * General:
   * It allows the user to play the **quiz game**
-  * You have to send the quiz category and previous questions in request body
+  * You have to submit the quiz category and previous questions in request body
   * It returns a new question to answer which is not in the previous questions
 * Sample: ```curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [22], "quiz_category": {"type": "Art", "id": "2"}}'```
 
