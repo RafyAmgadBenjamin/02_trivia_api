@@ -12,34 +12,71 @@ That's where you come in! Help them finish the trivia app so they can start hold
 4) Search for questions based on a text query string.
 5) Play the quiz game, randomizing either all questions or within a specific category. 
 
-## Tasks
+## Getting Started
 
-There are `TODO` comments throughout project. Start by reading the READMEs in:
+### Prerequisites and Installation
+To be able to work on this project you must have
 
-1. [`./frontend/`](./frontend/README.md)
-2. [`./backend/`](./backend/README.md)
+* python3 
+```bash
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get install python3.6
 
-We recommend following the instructions in those files in order. This order will look familiar from our prior work in the course.
+```
+* pip3 
+``` bash
+sudo apt install python3-pip
+```
+* Node.js
+```bash
+sudo apt install nodejs
+```
+* npm 
+```bash
+sudo apt install npm
+```
 
-## Starting and Submitting the Project
+#### Frontend dependencies:
+This project depends on NPM, npm (originally short for Node Package Manager) is a package manager for the JavaScript programming language. It is the default package manager for the JavaScript runtime environment Node.js. It consists of a command line client, also called npm.
+npm uses package.json files which is located in the ```frontend``` directory to install the packages needed for this project, after cloning the project go to the frontend directory, open the terminal and run:
+``` bash
+npm install
+```
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the [project repository]() and [Clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom. 
+#### Backend dependencies:
+once your environment is ready either you are using a virtual environment or developing on the local machine without a virtual environment, you have to install the backend dependencies, navigate to the ```backend``` directory, open the terminal and run:
+```bash
+pip3 install -r requirements.txt
+```
 
-## About the Stack
+#### Running the frontend in development mode
+* The frontend application was built using React which is JavaScript library for building user interfaces.
+* The frontend run on port 3000 the url on local machine will be ```http://loccalhost:3000```
+* We will use the development mode as we are still working on the application and it facilitates the developing by adding some features likes debugging and refreshing the page automatically upon any change.
+* To start the application, navigate to the ```frontend``` directory and run:
+```bash
+npm start
+```
+#### Running the backend in development mode.
+* The backend application was built using Flask which is  micro web framework written in Python.
+* We will use the development mode as we are still working on the application and it facilitates the developing by adding some features likes debugging and refreshing the page automatically upon any change.
+* To run the server,navigate to the ```backend``` directory and run:
 
-We started the full stack application for you. It is desiged with some key functional areas:
+```bash 
+export FLASK_APP=flaskr
+export FLASK_ENV=development
+flask run
+```
 
-### Backend
-
-The `./backend` directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in app.py to define your endpoints and can reference models.py for DB and SQLAlchemy setup. 
-
-### Frontend
-
-The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. You will need to update the endpoints after you define them in the backend. Those areas are marked with TODO and can be searched for expediency. 
-
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. 
-
-[View the README.md within ./frontend for more details.](./frontend/README.md)
+#### Testing
+* the application in testing dependes on ```unittest``` which is framework was originally inspired by JUnit and has a similar flavor as major unit testing frameworks in other languages.
+* To run the tests, navigate 
+```bash
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
 
 ### API Reference
 ___
