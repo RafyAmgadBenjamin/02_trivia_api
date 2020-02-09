@@ -15,7 +15,6 @@ class TriviaTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "trivia_test"
-        # self.database_path = "postgres://{}/{}".format('localhost:5432', self.database_name)
         self.database_path = "postgresql://{}:{}@{}/{}".format(
             "rafy", "admin", "localhost:5432", self.database_name
         )
@@ -44,18 +43,19 @@ class TriviaTestCase(unittest.TestCase):
     """
 
     def test_get_categories(self):
+        # Act
         res = self.client().get("/categories")
         data = json.loads(res.data)
-
+        # Assert
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["categories"])
 
-
     def test_get_paginated_questions(self):
+        # Act
         res = self.client().get("/questions")
         data = json.loads(res.data)
-
+        # Assert
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["questions"])
@@ -229,12 +229,11 @@ class TriviaTestCase(unittest.TestCase):
         }
         res = self.client().post("/quizzes", json=posted_data)
         data = json.loads(res.data)
-         # Assert
+        # Assert
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["error"], 400)
         self.assertEqual(data["message"], "bad request")
-
 
 
 # Make the tests conveniently executable

@@ -11,6 +11,9 @@ QUESTIONS_PER_PAGE = 10
 
 # Helper functions
 def pagination_questions(request, selection):
+    """
+    This function is used to paginate the questions into chunks each of ten quesions
+    """
     page = request.args.get("page", 1, type=int)
     start = (page - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
@@ -19,6 +22,9 @@ def pagination_questions(request, selection):
 
 
 def get_next_question(questions, previous_questions):
+    """
+    This function is used to get a new quesion not in the previous questions
+    """
     for question in questions:
         if question.id not in previous_questions:
             return question
